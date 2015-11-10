@@ -1,6 +1,6 @@
 {
   "name": "lixian-115",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Lixian 115 (115 离线下载命令行工具)",
   "license": "MIT",
   "repository": "coolzilj/lixian-115",
@@ -10,16 +10,9 @@
     "url": "liujin.me"
   },
   "bin": {
-    "lx115": "dist/cli.js"
+    "lx115": "cli.js"
   },
-  "main": "dist/lixian-115.js",
-  "scripts": {
-    "build": "babel src -d dist",
-    "post-build": "onchange 'dist/**.js' 'test/**.js' -- npm test",
-    "watch": "npm run build -- -w & npm run post-build",
-    "test": "standard && mocha --compilers js:babel/register",
-    "prepublish": "npm run build && npm test"
-  },
+  "main": "index.js",
   "keywords": [
     "115",
     "lixian",
@@ -30,24 +23,8 @@
     "object-assign": "^3.0.0",
     "optimist": "^0.6.1",
     "parse-torrent": "^5.2.1",
-    "prompt": "^0.2.14",
     "recursive-readdir": "^1.2.1",
     "request": "^2.58.0",
-    "sha1": "^1.1.1",
     "tough-cookie-filestore": "0.0.1"
-  },
-  "devDependencies": {
-    "babel": "*",
-    "chai": "*",
-    "mocha": "*",
-    "onchange": "1.x",
-    "standard": "*"
-  },
-  "standard": {
-    "ignore": [
-      "coverage/**",
-      "dist/**",
-      "node_modules/**"
-    ]
   }
 }
