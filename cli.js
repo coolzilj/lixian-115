@@ -62,7 +62,7 @@ if (argv.v || argv.version) {
 } else if (argv.d || argv.directory) {
   recursive(argv.directory, function (err, files) {
     if (err) {
-      return console.log('Something wrong');
+      console.error(err.message);
     }
 
     // 过滤种子文件
@@ -80,6 +80,7 @@ if (argv.v || argv.version) {
     _.each(chunks, function (chunk, index) {
       var urls = '';
       _.each(chunk, function (file) {
+        console.log(file);
         var torrent = parseTorrent(fs.readFileSync(file));
         var uri = parseTorrent.toMagnetURI(torrent);
         urls += uri + '\n';
@@ -87,11 +88,11 @@ if (argv.v || argv.version) {
 
       setTimeout(function () {
         if (chunk.length === 14) {
-          console.log("++ Added " + ((index + 1) * 15) + " link tasks");
+          console.log("++ Added " + ((index + 1) * 15) + " tasks");
         } else {
-          console.log("++ Added " + (index * 15 + chunk.length) + " link tasks");
+          console.log("++ Added " + (index * 15 + chunk.length) + " tasks");
         }
-        lx115.addLinkTasks(urls);
+        lx115.addTasks(urls);
       }, index * 20000);
     });
   });
