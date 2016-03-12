@@ -11,9 +11,17 @@ var optimist     = require('optimist');
 var lx115 = new Lixian115();
 
 var argv = optimist.usage('115 离线下载命令行工具')
+    .options('d', {
+      alias: 'directory',
+      describe: '本地种子目录'
+    })
     .options('t', {
-      alias: 'torrents',
-      describe: '批量添加种子文件'
+      alias: 'torrent',
+      describe: '本地种子文件(单个)'
+    })
+    .options('m', {
+      alias: 'magnet',
+      describe: '磁力链（链接后加 \\n 最多添加15个）'
     })
     .options('v', {
       alias: 'version',
@@ -23,12 +31,14 @@ var argv = optimist.usage('115 离线下载命令行工具')
 
 if (argv.v || argv.version) {
   console.log(pjson.version);
-} else if (argv.t || argv.torrents) {
-  recursive(argv.torrents, function (err, files) {
+
+} else if (argv.d || argv.directory) {
+  recursive(argv.directory, function (err, files) {
     if (err) {
-      return console.log('Something wrong');
+      console.error(err.message);
     }
 
+    // 过滤种子文件
     files = _.filter(files, function (file) {
       return file.match(/.\.torrent$/);
     });
@@ -38,6 +48,7 @@ if (argv.v || argv.version) {
     _.each(chunks, function (chunk, index) {
       var urls = '';
       _.each(chunk, function (file) {
+        // console.log(file);
         var torrent = parseTorrent(fs.readFileSync(file));
         var uri = parseTorrent.toMagnetURI(torrent);
         urls += uri + '\n';
@@ -45,14 +56,23 @@ if (argv.v || argv.version) {
 
       setTimeout(function () {
         if (chunk.length === 14) {
-          console.log("++ Added " + ((index + 1) * 15) + " link tasks");
+          console.log("++ Added " + ((index + 1) * 15) + " tasks");
         } else {
-          console.log("++ Added " + (index * 15 + chunk.length) + " link tasks");
+          console.log("++ Added " + (index * 15 + chunk.length) + " tasks");
         }
-        lx115.addLinkTasks(urls);
+        lx115.addTasks(urls);
       }, index * 20000);
     });
   });
+
+} else if (argv.t || argv.torrent) {
+  var torrent = parseTorrent(fs.readFileSync(argv.torrent));
+  var url = parseTorrent.toMagnetURI(torrent);
+  lx115.addTasks(url);
+
+} else if (argv.m || argv.magnet) {
+  lx115.addTasks(argv.magnet);
+
 } else {
   optimist.showHelp();
 }

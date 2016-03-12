@@ -13,7 +13,7 @@ function Lixian115 () {
   this.isLogin = false;
 };
 
-Lixian115.prototype.addLinkTasks = function (urls) {
+Lixian115.prototype.addTasks = function (urls) {
   var self = this;
   self.checkLogin(function () {
     self.getUid(function (uid) {
@@ -39,19 +39,21 @@ Lixian115.prototype.addLinkTasks = function (urls) {
           if (!err && res.statusCode === 200) {
             body = JSON.parse(body);
             if (body.state) {
+              // console.log(body.result);
               for (var i = 0; i < body.result.length; i++) {
                 var result = body.result[i];
                 if (result.info_hash) {
-                  console.log("++ Add link task " + (i + 1) + " successed.");
+                  console.log("++ Add task " + (i + 1) + " (" + result.name + ")" + " successed.");
                 } else {
-                  console.log("++ Add link task " + (i + 1) + " failed: " + result.error_msg);
+                  var name = decodeURI(result.url.split('&tr')[0].match(/&dn=(.+)/)[1]);
+                  console.log("++ Add task " + (i + 1) + " (" + name + ")" + " failed: " + result.error_msg);
                 }
               }
             } else {
               console.error("Error: " + body.error_msg);
             }
           } else {
-            console.error('Error at add link task.');
+            console.error('Error at add task.');
           }
         })
       })
