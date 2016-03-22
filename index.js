@@ -45,8 +45,9 @@ Lixian115.prototype.addTasks = function (urls) {
                 if (result.info_hash) {
                   console.log("++ Add task " + (i + 1) + " (" + result.name + ")" + " successed.");
                 } else {
-                  var name = decodeURI(result.url.split('&tr')[0].match(/&dn=(.+)/)[1]);
-                  console.log("++ Add task " + (i + 1) + " (" + name + ")" + " failed: " + result.error_msg);
+                  // var name = decodeURI(result.url.split('&tr')[0].match(/&dn=(.+)/)[1]);
+                  // console.log("++ Add task " + (i + 1) + " (" + name + ")" + " failed: " + result.error_msg);
+                  console.log("++ Add task " + (i + 1) + " failed: " + result.error_msg);
                 }
               }
             } else {
