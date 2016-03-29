@@ -11,6 +11,15 @@ function Lixian115 () {
   }
   this.jar = request.jar();
   this.isLogin = false;
+  this.headers = {
+    "Accept":"Accept: application/json, text/javascript, */*; q=0.01",
+    "Accept-Encoding":"text/html",
+    "Accept-Language":"en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4,zh-TW;q=0.2",
+    "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
+    "Referer":"http://m.115.com/",
+    "X-Requested-With": "XMLHttpRequest",
+    "User-Agent":"Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36"
+  };
 };
 
 Lixian115.prototype.addTasks = function (urls) {
@@ -32,9 +41,10 @@ Lixian115.prototype.addTasks = function (urls) {
         self.setCookie('http://115.com/lixian/?ct=lixian&ac=add_task_urls');
 
         request.post({
-          url: 'http://115.com/lixian/?ct=lixian&ac=add_task_urls',
+          url: 'http://115.com/web/lixian/?ct=lixian&ac=add_task_urls',
           form: data,
-          jar: self.jar
+          jar: self.jar,
+          headers: self.headers
         }, function (err, res, body) {
           if (!err && res.statusCode === 200) {
             body = JSON.parse(body);
@@ -70,7 +80,7 @@ Lixian115.prototype.getUid = function (cb) {
   var url = 'http://my.115.com/?ct=ajax&ac=get_user_aq';
   this.setCookie(url);
 
-  request.get({url: url, jar: this.jar}, function (err, res, body) {
+  request.get({url: url, jar: this.jar, headers: this.headers}, function (err, res, body) {
     if (!err && res.statusCode === 200) {
       cb(JSON.parse(body).data.uid);
     }
@@ -84,7 +94,7 @@ Lixian115.prototype.getSignTime = function (cb) {
   }
   var url = 'http://115.com/?ct=offline&ac=space';
   this.setCookie(url);
-  request.get({url: url, jar: this.jar}, function (err, res, body) {
+  request.get({url: url, jar: this.jar, headers: this.headers}, function (err, res, body) {
     if (!err && res.statusCode === 200) {
       var data = {
         sign: JSON.parse(body).sign,
