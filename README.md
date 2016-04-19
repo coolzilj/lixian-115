@@ -20,7 +20,7 @@ $ npm install -g lixian-115
 
 ### Login (登录)
 由于 115 的登录策略改变，登录功能已废。
-请在浏览器登录后，推荐使用 [EditThisCookie](http://www.editthiscookie.com/) 插件导出 cookies 到 `{HOMEPATH}/.115.cookies` 即可正常使用。
+请在浏览器登录后，推荐使用 [EditThisCookie](http://www.editthiscookie.com/) 插件导出 cookies 到 `{HOMEPATH}/.115.cookies` 即可正常使用。cookies 只支持分号分隔的格式，`a=1;b=2;c=3` [#3](https://github.com/coolzilj/lixian-115/issues/3)
 
 ### Add multiple torrents (本地种子目录)
 ```js
